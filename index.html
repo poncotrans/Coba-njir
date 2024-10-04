@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBBI API Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap; /* Untuk menampilkan JSON dalam format yang lebih baik */
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cari Definisi di KBBI</h1>
+    <input type="text" id="query" placeholder="Masukkan kata kunci..." />
+    <button id="searchBtn">Cari</button>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const query = document.getElementById('query').value;
+
+            if (query) {
+                // Membuat permintaan ke API KBBI
+                fetch(`https://new-kbbi-api.herokuapp.com/cari/text/${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Menampilkan hasil dalam format JSON
+                        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => {
+                        document.getElementById('result').textContent = 'Terjadi kesalahan: ' + error.message;
+                    });
+            } else {
+                document.getElementById('result').textContent = 'Silakan masukkan kata kunci.';
+            }
+        });
+    </script>
+</body>
+</html>
