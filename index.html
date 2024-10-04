@@ -38,8 +38,11 @@
             const query = document.getElementById('query').value;
 
             if (query) {
-                // Membuat permintaan ke API KBBI
-                fetch(`https://new-kbbi-api.herokuapp.com/cari/text/${encodeURIComponent(query)}`)
+                // Menggunakan proxy CORS
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const apiUrl = `https://new-kbbi-api.herokuapp.com/cari/text/${encodeURIComponent(query)}`;
+
+                fetch(proxyUrl + apiUrl)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
